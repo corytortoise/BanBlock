@@ -1,0 +1,11 @@
+name: BanBlock
+author: corytortoise
+main: corytortoise\BanBlock\BanBlock
+version: "1.0.0"
+api: [3.0.0-ALPHA12, 3.0.3, 3.1.1, 3.1.2]
+description: Prevents players from breaking specified blocks.
+
+permissions:
+    banblock:
+        default: false
+        description: "Allows players to break banned blocks"

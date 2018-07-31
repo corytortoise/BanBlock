@@ -1,0 +1,14 @@
+## Config file for BanBlock.
+---
+blocks:
+    #Use the format "id" or "id:meta" for blocks. 
+    # \/ Bedrock block \/
+    - "7" 
+    # \/ Brown Wool \/
+    - "35:12"
+
+#If set to true, plugin won't send messages when it prevents breaking a block.
+mute: false
+
+#What message is sent to a player when they try to break a banned block.
+message: "You are not allowed to break that."
