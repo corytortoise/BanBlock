@@ -8,4 +8,8 @@ description: Prevents players from breaking specified blocks.
 permissions:
     banblock:
         default: false
-        description: "Allows players to break banned blocks"
+        description: "Parent permission for BanBlock"
+        children:
+            banblock.break:
+                default: false
+                description: "Allows players to break banned blocks"

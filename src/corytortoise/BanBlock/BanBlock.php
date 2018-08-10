@@ -3,6 +3,7 @@
 namespace corytortoise\BanBlock;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\Player;
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\utils\TextFormat as C;
@@ -27,7 +28,7 @@ class BanBlock extends PluginBase implements Listener {
         continue;
       } else {
         $data = \explode(":", $block);
-        $result[$data[1]] = $data[1];
+        $result[$data[0]] = $data[1];
         continue;
       }
     }
@@ -35,12 +36,39 @@ class BanBlock extends PluginBase implements Listener {
   }
 
   /**
-   *
-   * @param \corytortoise\BanBlock\Player $player
+   * Sends a player a message from Config.
+   * @param Player $player
    */
   private function handleMessage(Player $player) {
     if($this->getConfig()->get("mute") === false) {
       $player->sendMessage(C::RED . $this->getConfig()->get("message"));
+    }
+  }
+
+  /**
+   * Returns whether a player is allowed to break the block or not.
+   * @param Player $player
+   * @return boolean
+   */
+  public function canBreak(Player $player) {
+    if($this->getConfig()->get("perm") && $player->hasPermission("banblock.break")) {
+      return true;
+    }
+    switch($this->getConfig()->get("type")) {
+      case "whitelist":
+      case "wl":
+        if(in_array($player->getName(), $this->getConfig()->get("players"))) {
+          return true;
+        }
+        return false;
+      case "blacklist":
+      case "bl":
+        if(in_array($player->getName(), $this->getConfig()->get("players"))) {
+          return false;
+        }
+        return true;
+      case "null":
+        return false;
     }
   }
 
@@ -53,12 +81,12 @@ class BanBlock extends PluginBase implements Listener {
     $block = $event->getBlock()->getId();
     if(\in_array($block, $data = $this->parseBlocks())) {
       $player = $event->getPlayer();
-      if(!$player->hasPermission("banblock") && !$player->isOp()) {
+      if(!$this->canBreak($player)) {
         if($data[$block] === true) {
           $event->setCancelled(true);
           $this->handleMessage($player);
         } else {
-          if($event->getBlock()->getMeta() === $data[$block]) {
+          if($event->getBlock()->getDamage() == $data[$block]) {
             $event->setCancelled(true);
             $this->handleMessage($player);
           }

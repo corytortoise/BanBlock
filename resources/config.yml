@@ -6,6 +6,16 @@ blocks:
     - "7" 
     # \/ Brown Wool \/
     - "35:12"
+    
+#Whether players can bypass BanBlock through permissions. Set to false if you don't want OPs to bypass.
+perm: true
+
+#Whether to use whitelist for players or blacklist. Use "null" for neither.
+type: whitelist
+
+#Players included in the whitelist/blacklist. 
+players:
+    - "exampleusername"
 
 #If set to true, plugin won't send messages when it prevents breaking a block.
 mute: false
