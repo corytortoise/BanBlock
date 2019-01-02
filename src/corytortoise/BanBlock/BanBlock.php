@@ -17,6 +17,10 @@ class BanBlock extends PluginBase implements Listener {
     $this->getLogger()->notice(\count(\array_keys($this->parseBlocks())) . " Blocks have been banned.");
   }
 
+  /**
+   * Turns strings in config into arrays for easy management.
+   * @param array $blocks
+   */
   public function parseBlocks(array $blocks = []) {
     if(empty($blocks)) {
       $blocks = $this->getConfig()->get("blocks");
@@ -57,17 +61,17 @@ class BanBlock extends PluginBase implements Listener {
     switch($this->getConfig()->get("type")) {
       case "whitelist":
       case "wl":
-        if(in_array($player->getName(), $this->getConfig()->get("players"))) {
+        if(\in_array($player->getName(), $this->getConfig()->get("players"))) {
           return true;
         }
         return false;
       case "blacklist":
       case "bl":
-        if(in_array($player->getName(), $this->getConfig()->get("players"))) {
+        if(\in_array($player->getName(), $this->getConfig()->get("players"))) {
           return false;
         }
         return true;
-      case "null":
+      default:
         return false;
     }
   }
